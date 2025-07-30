@@ -1,0 +1,64 @@
+/* Custom styles for the page */
+body {
+    font-family: 'Poppins', sans-serif; /* Poppins for normal text */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.font-manrope {
+    font-family: 'Manrope', sans-serif; /* Manrope for titles */
+}
+
+.timer-box {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Animation for the background blobs */
+@keyframes blob-animation {
+    0% {
+        transform: scale(1) translate(0px, 0px);
+    }
+    33% {
+        transform: scale(1.1) translate(20px, -30px);
+    }
+    66% {
+        transform: scale(0.9) translate(-20px, 20px);
+    }
+    100% {
+        transform: scale(1) translate(0px, 0px);
+    }
+}
+
+.animate-blob {
+    animation: blob-animation 10s infinite ease-in-out;
+}
+
+.animation-delay-2000 {
+    animation-delay: -2s;
+}
+
+.animation-delay-4000 {
+    animation-delay: -4s;
+}
+
+/* Styles for the modal */
+#hintModal {
+    transition: opacity 0.3s ease;
+}
+
+/* Spinner animation for a brief "thinking" effect */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #4f46e5; /* indigo-600 */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
