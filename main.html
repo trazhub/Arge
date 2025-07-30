@@ -33,7 +33,7 @@
         #hintModal {
             transition: opacity 0.3s ease;
         }
-        /* Spinner animation */
+        /* Spinner animation for a brief "thinking" effect */
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.2);
             border-left-color: #fff;
@@ -130,11 +130,6 @@
             <div id="hintContent" class="min-h-[80px] flex items-center justify-center">
                 <!-- Content will be injected by JavaScript -->
             </div>
-            <div id="apiKeySection" class="mt-6 text-left hidden">
-                <p class="text-sm text-gray-400 mb-2">To get hints, please provide your Gemini API key. You can get one from <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-purple-400 hover:underline">Google AI Studio</a>.</p>
-                <input type="password" id="apiKeyInput" placeholder="Enter your Gemini API Key" class="w-full px-4 py-2 rounded-md bg-gray-800 border border-gray-700 focus:ring-2 focus:ring-purple-500 focus:outline-none transition duration-300">
-                <button id="saveApiKeyBtn" class="w-full mt-3 px-6 py-2 bg-purple-600 hover:bg-purple-700 rounded-md font-semibold transition duration-300">Save Key & Get Hint</button>
-            </div>
         </div>
     </div>
 
@@ -163,16 +158,47 @@
             }
         }, 1000);
 
-        // --- GEMINI HINT FEATURE SCRIPT ---
+        // --- HINT FEATURE SCRIPT ---
         const getHintBtn = document.getElementById('getHintBtn');
         const hintModal = document.getElementById('hintModal');
         const closeModalBtn = document.getElementById('closeModalBtn');
         const hintContent = document.getElementById('hintContent');
-        const apiKeySection = document.getElementById('apiKeySection');
-        const apiKeyInput = document.getElementById('apiKeyInput');
-        const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
 
-        let geminiApiKey = localStorage.getItem('geminiApiKey');
+        // Pre-generated list of hints for security and performance on a live site
+        const hints = [
+            "Arge is where the unseen becomes unforgettable.",
+            "Prepare to experience creativity in its purest form. Arge is coming.",
+            "The digital canvas is about to change forever. Arge is near.",
+            "Unlock a new dimension of interaction. Arge holds the key.",
+            "Beyond the code, beyond the design, lies Arge.",
+            "It's not just a tool, it's a new way of thinking. Get ready for Arge.",
+            "The power of unseen forces, harnessed. That is Arge.",
+            "Where logic meets imagination, you will find Arge.",
+            "A new era of digital creation dawns with Arge.",
+            "The barrier between thought and reality is about to dissolve. Arge is the catalyst.",
+            "See what's hidden in plain sight. Arge will show you.",
+            "Your ideas, amplified. Your vision, realized. Arge is the future.",
+            "The next leap forward isn't a step, it's a paradigm shift. It's Arge.",
+            "Arge: The architecture of tomorrow's ideas.",
+            "What if your tools could anticipate your next move? Arge can.",
+            "Prepare for a seamless flow between inspiration and creation. Arge is coming.",
+            "The fabric of digital reality is being rewoven. Arge is the thread.",
+            "Complexity, simplified. Possibility, expanded. Arge is the answer.",
+            "Don't just build, innovate. Arge will lead the way.",
+            "The future is not built, it's grown. Arge is the seed.",
+            "A whisper of what's to come, a promise of what's possible. That is Arge.",
+            "The lines between art and technology are blurring. Arge is the new spectrum.",
+            "Imagine a world where your only limit is your imagination. Arge is that world.",
+            "The unseen is about to be revealed. Are you ready for Arge?",
+            "A revolution in digital craftsmanship is upon us. Arge is its name.",
+            "The next generation of innovation is not about more, but about better. Arge is better.",
+            "The symphony of creation is about to begin. Arge is the conductor.",
+            "Where data dances and ideas sing, Arge is the stage.",
+            "The future is a conversation, and Arge is the new language.",
+            "The unseen power of connection, made tangible. Arge is almost here."
+        ];
+
+        let lastHintIndex = -1;
 
         // Function to show the modal
         const showModal = () => {
@@ -182,78 +208,30 @@
         // Function to hide the modal
         const hideModal = () => {
             hintModal.classList.add('opacity-0', 'pointer-events-none');
-            apiKeySection.classList.add('hidden'); // Hide API key section on close
         };
         
-        // Function to fetch a hint from the Gemini API
-        const getHint = async () => {
-            if (!geminiApiKey) {
-                hintContent.innerHTML = '';
-                apiKeySection.classList.remove('hidden');
-                return;
-            }
+        // Function to get a random hint from the pre-generated list
+        const getHint = () => {
+            hintContent.innerHTML = '<div class="spinner"></div>'; // Show spinner for a moment
 
-            apiKeySection.classList.add('hidden');
-            hintContent.innerHTML = '<div class="spinner"></div>'; // Show spinner
-            
-            const prompt = "Generate a short, mysterious, and exciting hint about a new brand or product called 'Arge'. The hint should be one or two sentences and create a sense of anticipation.";
-            
-            let chatHistory = [];
-            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-            const payload = { contents: chatHistory };
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${geminiApiKey}`;
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                     if (response.status === 400) {
-                        throw new Error('Invalid API Key. Please check your key and try again.');
-                    }
-                    throw new Error(`API request failed with status ${response.status}`);
-                }
-
-                const result = await response.json();
+            setTimeout(() => {
+                let randomIndex;
+                // Ensure we don't show the same hint twice in a row
+                do {
+                    randomIndex = Math.floor(Math.random() * hints.length);
+                } while (hints.length > 1 && randomIndex === lastHintIndex);
                 
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    hintContent.innerHTML = `<p class="text-lg text-gray-300">${text}</p>`;
-                } else {
-                    throw new Error("Invalid response structure from API.");
-                }
-
-            } catch (error) {
-                console.error("Error fetching hint:", error);
-                hintContent.innerHTML = `<p class="text-red-400">${error.message}</p>`;
-                // If there's an error, prompt for the key again
-                setTimeout(() => {
-                    geminiApiKey = null;
-                    localStorage.removeItem('geminiApiKey');
-                    apiKeySection.classList.remove('hidden');
-                }, 2000);
-            }
+                lastHintIndex = randomIndex;
+                const hint = hints[randomIndex];
+                
+                hintContent.innerHTML = `<p class="text-lg text-gray-300">${hint}</p>`;
+            }, 500); // Simulate a short loading time
         };
 
         // Event Listeners
         getHintBtn.addEventListener('click', () => {
             showModal();
             getHint();
-        });
-        
-        saveApiKeyBtn.addEventListener('click', () => {
-            const newKey = apiKeyInput.value.trim();
-            if (newKey) {
-                localStorage.setItem('geminiApiKey', newKey);
-                geminiApiKey = newKey;
-                apiKeyInput.value = '';
-                getHint();
-            }
         });
 
         closeModalBtn.addEventListener('click', hideModal);
