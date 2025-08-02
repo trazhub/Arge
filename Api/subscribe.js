@@ -1,38 +1,8 @@
-const admin = require('firebase-admin');
-
-// This function will decode the Base64 key from Vercel's environment variables
-function getPrivateKey() {
-  const base64Key = process.env.FIREBASE_PRIVATE_KEY;
-  if (!base64Key) {
-    throw new Error('FIREBASE_PRIVATE_KEY environment variable is not set.');
-  }
-  // Create a buffer from the Base64 string and convert it back to a regular string
-  return Buffer.from(base64Key, 'base64').toString('utf-8');
-}
-
-try {
-  if (!admin.apps.length) {
-    admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        // Use the decoded private key
-        privateKey: getPrivateKey(),
-      }),
-    });
-  }
-} catch (error) {
-  console.error('Firebase admin initialization error:', error.message);
-  // This will help us see the error clearly in the Vercel logs
-  module.exports = (req, res) => {
-    res.status(500).json({ message: 'Server configuration error. Could not connect to the database.' });
-  };
-  return;
-}
-
-const db = admin.firestore();
+// This is a simplified test function. It does NOT connect to Firebase.
+// Its only purpose is to check if the Vercel function is running correctly.
 
 module.exports = async (req, res) => {
+  // Check if the request is a POST request
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Only POST requests are allowed' });
   }
@@ -40,18 +10,18 @@ module.exports = async (req, res) => {
   try {
     const { email } = req.body;
 
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return res.status(400).json({ message: 'Please provide a valid email address.' });
+    // Check if an email was provided in the request
+    if (!email) {
+      return res.status(400).json({ message: 'No email provided.' });
     }
 
-    await db.collection('subscriptions').add({
-      email: email,
-      subscribedAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
+    // If everything is okay, send a simple success message back.
+    // This proves the function is working.
+    return res.status(200).json({ message: `Successfully received email: ${email}` });
 
-    return res.status(200).json({ message: 'Successfully subscribed!' });
   } catch (error) {
-    console.error('Error in subscription function:', error);
-    return res.status(500).json({ message: 'An error occurred. Please try again later.' });
+    // This will catch any other unexpected errors
+    console.error('Error in test function:', error);
+    return res.status(500).json({ message: 'An unexpected error occurred.' });
   }
 };
