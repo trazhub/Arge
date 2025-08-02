@@ -2,6 +2,14 @@ const { google } = require('googleapis');
 
 // This is the main function that will be executed by Vercel
 module.exports = async (req, res) => {
+  // --- New Debugging Logs ---
+  console.log('--- Vercel Environment Variables Check ---');
+  console.log('GOOGLE_SHEET_ID is set:', !!process.env.GOOGLE_SHEET_ID);
+  console.log('GOOGLE_CLIENT_EMAIL is set:', !!process.env.GOOGLE_CLIENT_EMAIL);
+  console.log('GOOGLE_PRIVATE_KEY is set:', !!process.env.GOOGLE_PRIVATE_KEY);
+  console.log('--- End of Check ---');
+  // --- End of Debugging Logs ---
+
   // 1. Check if it's a POST request
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Only POST requests are allowed' });
