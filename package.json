@@ -1,12 +1,9 @@
 {
-  "name": "arge-coming-soon",
+  "name": "arge-opening-soon",
   "version": "1.0.0",
-  "description": "Coming soon page for Arge",
-  "main": "index.js",
-  "scripts": {
-    "start": "echo \"No start script needed for static deployment\""
-  },
+  "description": "Opening soon page for Arge",
   "dependencies": {
-    "firebase-admin": "^12.1.0"
+    "firebase-admin": "^12.1.0",
+    "googleapis": "^140.0.0"
   }
 }
