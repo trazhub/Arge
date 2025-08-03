@@ -25,7 +25,7 @@
         <main id="main-content">
             <img src="arge.png" alt="Arge Logo" class="logo">
             <h1 class="title">Opening soon</h1>
-            <p class="subtitle">Sign up for our newsletter to be the first to know when we launch.</p>
+            <p class="subtitle">Be the first to know when we launch.</p>
             
             <!-- Countdown Timer -->
             <div id="countdown" class="countdown-container">
@@ -47,20 +47,34 @@
                 </div>
             </div>
 
-            <form id="subscribe-form" class="subscribe-form">
-                <input type="email" id="email-input" placeholder="Email address" required class="email-input" />
-                <button type="submit" id="submit-button" class="submit-button">
-                    SIGN UP
-                </button>
-            </form>
-            <p id="form-message" class="form-message"></p>
+            <!-- Social Call to Action -->
+            <a href="https://www.instagram.com/arge_in/" target="_blank" class="social-cta">
+                <i class="fab fa-instagram"></i>
+                <span>Follow on Instagram</span>
+            </a>
+
+            <!-- Reveal a Hint Button -->
+            <button id="getHintBtn" class="hint-button">
+                ✨ Reveal a Hint
+            </button>
         </main>
 
         <footer>
-             <a href="https://www.instagram.com/arge_in/" target="_blank" class="social-icon">
-                <i class="fab fa-instagram"></i>
-            </a>
+            <!-- Footer is now minimal -->
         </footer>
+    </div>
+
+    <!-- Hint Modal -->
+    <div id="hintModal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="closeModalBtn" class="modal-close-button">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="modal-title">A Glimpse into Arge...</h2>
+            <div id="hintContent" class="modal-body">
+                <!-- Hint will be injected here -->
+            </div>
+        </div>
     </div>
 
     <!-- Custom JavaScript -->
@@ -68,4 +82,3 @@
 
 </body>
 </html>
-x`
