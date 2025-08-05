@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>aRGe - Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #ffffff;
+      background: url('bg.jpg') no-repeat center center/cover;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo {
+      width: 180px;
+      margin-bottom: 5px;
+    }
+
+    .coming-soon {
+      font-size: 1.56rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      margin-bottom: 30px;
+    }
+
+    .countdown {
+      display: flex;
+      gap: 40px;
+      font-size: 6rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .countdown span {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .label {
+      font-size: 0.9rem;
+      font-weight: 400;
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .launch-date {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      margin-top: 20px; /* Reduced this value to bring it closer */
+      margin-bottom: 68px;
+    }
+
+    .instagram-button {
+      background-color: #333333;
+      color: white;
+      font-family: 'Manrope', sans-serif;
+      padding: 12px 70px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      text-shadow: none;
+      font-size: 0.9rem;
+    }
+
+    .surprise-link {
+      font-family: 'Poppins', sans-serif;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+      font-size: 0.8rem;
+    }
+    
+    .surprise-link:hover {
+        opacity: 0.8;
+    }
+
+    .surprise-message {
+      margin-top: 20px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      height: 24px;
+    }
+
+    .surprise-message.show {
+      opacity: 1;
+    }
+
+    /* ## -- MOBILE RESPONSIVE FIX -- ## */
+    @media (max-width: 768px) {
+      .logo {
+        width: 150px;
+        margin-bottom: 5px;
+      }
+      .coming-soon {
+        font-size: 1.3rem;
+        margin-bottom: 25px;
+      }
+      .countdown {
+        font-size: 3.2rem;
+        gap: 15px;
+      }
+      .label {
+        font-size: 0.7rem;
+        margin-top: 2px;
+      }
+      .launch-date {
+        margin-top: 15px; /* Also reduced for mobile */
+        margin-bottom: 61px;
+      }
+      .instagram-button {
+        padding: 10px 56px;
+        margin-bottom: 15px;
+        font-size: 0.8rem;
+      }
+      .surprise-link {
+        font-size: 0.7rem;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="content-wrapper">
+    <img src="RG LOGO final white.png" alt="aRGe Logo" class="logo">
+
+    <div class="coming-soon">COMING SOON</div>
+
+    <div class="countdown">
+      <span><div id="days">00</div><div class="label">DAYS</div></span>
+      <span><div id="hours">00</div><div class="label">HOURS</div></span>
+      <span><div id="minutes">00</div><div class="label">MINUTES</div></span>
+      <span><div id="seconds">00</div><div class="label">SECONDS</div></span>
+    </div>
+
+    <div class="launch-date">LAUNCHING 15th AUG</div>
+
+    <button class="instagram-button" onclick="window.open('https://www.instagram.com/arge_in/', '_blank')">
+      <img src="https://img.icons8.com/ios-glyphs/30/ffffff/instagram-new.png" width="18" height="18" alt="Instagram icon"/>
+      Follow us on Instagram
+    </button>
+
+    <button class="surprise-link" onclick="showSurprise()">Click for a surprise</button>
+    
+    <div class="surprise-message" id="surprise-message"></div>
+  </div>
+
+  <script>
+    const launchDate = new Date('2025-08-15T00:00:00+05:30').getTime();
+    let surpriseTimeout;
+
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      if (distance < 0) {
+        clearInterval(timer);
+        document.querySelector('.countdown').innerHTML = '<h1 style="font-size: 2.5rem; width: 100vw; text-align: center;">We are live!</h1>';
+        document.querySelector('.launch-date').style.display = 'none';
+        document.querySelector('.coming-soon').style.display = 'none';
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = days < 10 ? '0' + days : days;
+      document.getElementById('hours').textContent = hours < 10 ? '0' + hours : hours;
+      document.getElementById('minutes').textContent = minutes < 10 ? '0' + minutes : minutes;
+      document.getElementById('seconds').textContent = seconds < 10 ? '0' + seconds : seconds;
+    }, 1000);
+
+    function showSurprise() {
+      const messages = [
+        "A new drop is coming soon!",
+        "You're officially on the VIP list 👀",
+        "Streetwear, but make it iconic.",
+        "Stay tuned. You won't want to miss this.",
+        "🔥 You're early. And that’s cool."
+      ];
+      const random = Math.floor(Math.random() * messages.length);
+      const surpriseEl = document.getElementById('surprise-message');
+      
+      surpriseEl.textContent = messages[random];
+      surpriseEl.classList.add('show');
+
+      clearTimeout(surpriseTimeout);
+
+      surpriseTimeout = setTimeout(() => {
+        surpriseEl.classList.remove('show');
+      }, 4000);
+    }
+  </script>
+</body>
+</html>

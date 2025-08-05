@@ -1,9 +1,0 @@
-{
-  "name": "arge-opening-soon",
-  "version": "1.0.0",
-  "description": "Opening soon page for Arge",
-  "dependencies": {
-    "firebase-admin": "^12.1.0",
-    "googleapis": "^140.0.0"
-  }
-}
