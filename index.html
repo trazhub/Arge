@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>aRGe</title>
-  <link rel="icon" type="image/png" href="RG LOGO final white.png">
+  <title>aRGe - Coming Soon</title>
+  <link rel="icon" type="image/png" href="image_c61722.png">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -119,6 +119,28 @@
       opacity: 1;
     }
 
+    /* ## -- Footer Links -- ## */
+    .footer-links {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      gap: 20px;
+      z-index: 100;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+
     /* ## -- MOBILE RESPONSIVE FIX -- ## */
     @media (max-width: 768px) {
       .logo {
@@ -149,6 +171,17 @@
       .surprise-link {
         font-size: 0.7rem;
       }
+
+      .footer-links {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        justify-content: center;
+        bottom: 15px;
+      }
+      .footer-links a {
+        font-size: 0.7rem;
+      }
     }
 
   </style>
@@ -177,6 +210,11 @@
     <button class="surprise-link" onclick="showSurprise()">Click for a surprise</button>
     
     <div class="surprise-message" id="surprise-message"></div>
+  </div>
+
+  <div class="footer-links">
+    <a href="https://cdn.arge.in/Privacy%20Policy%2C%20Cookie%20Policy%20and%20Return%20Policy%20.pdf" target="_blank">Privacy & Cookie Policy</a>
+    <a href="https://cdn.arge.in/T%26Cs.pdf" target="_blank">T&Cs</a>
   </div>
 
   <script>
